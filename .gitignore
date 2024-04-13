@@ -1,3 +1,5 @@
 # ignore these guys
 *.out
 *.o
+
+*.txt

@@ -1,8 +1,8 @@
 # Makefile for compiling C++ source files
 
 # Compiler and flags
-CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -g
+CXX = gcc
+CXXFLAGS = -std=c2x -Wall -Wextra -g
 
 # Directories
 SRCDIR = src
@@ -10,18 +10,18 @@ INCDIR = headers
 BINDIR = .
 
 # Source files and object files
-SOURCES = $(wildcard $(SRCDIR)/*.cpp)
-OBJECTS = $(SOURCES:$(SRCDIR)/%.cpp=$(BINDIR)/%.o)
+SOURCES = $(wildcard $(SRCDIR)/*.c)
+OBJECTS = $(SOURCES:$(SRCDIR)/%.c=$(BINDIR)/%.o)
 
 # Output executable
-TARGET = a.out
+TARGET = prog2
 
 # Rules for building the executable
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS)
 
 # Compile source files into object files
-$(BINDIR)/%.o: $(SRCDIR)/%.cpp
+$(BINDIR)/%.o: $(SRCDIR)/%.c
 	$(CXX) $(CXXFLAGS) -I$(INCDIR) -c $< -o $@
 
 # Clean rule
