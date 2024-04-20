@@ -188,11 +188,51 @@ char *readFile(char *filename) {
 	return fileString;
 }
 
+signed long long int RecBinarySearch(size_t startIndex, size_t endIndex, int *intArray, int searchValue) {
+	
+	if ( (startIndex == endIndex) && (intArray[startIndex] == searchValue) ) 
+		return startIndex;
+	
+	if ( (startIndex == endIndex) && (intArray[startIndex] != searchValue) ) 
+		return -1;
+	
+	size_t middleIndex = (startIndex + endIndex) / 2;
+	printf("middleIndex = %lu\n", middleIndex);
+
+	if ( searchValue == intArray[middleIndex] )
+		return middleIndex;
+	else if ( searchValue < intArray[middleIndex] )
+		endIndex = middleIndex;
+	else
+		startIndex = middleIndex + 1;
+	
+	return RecBinarySearch(startIndex, endIndex, intArray, searchValue);
+}
+
+int frontendForBinSearch(size_t startIndex, size_t endIndex, int *intArray) {
+	int searchValue = 0;
+	signed long long int searchIndex = -1;
+	
+	printf("Which number would you like to search for: ");
+	searchValue = ReadInteger();
+	
+	searchIndex = RecBinarySearch(startIndex, endIndex, intArray, searchValue);
+	
+	if (searchIndex == -1) {
+		printf("The number was not found in the array.");
+		return -1;
+	}
+	
+	printf("The number, %d, is has index, %lld", searchValue, searchIndex);
+	
+	return 0;
+}
+
 void readUserInput(int *array, size_t sze) {
-	size_t i = 0;
-	for (i = 0; i < sze; i++) {
+	size_t n = 0;
+	for (n = 0; n < sze; n++) {
 		printf("Number: ");
-		array[i] = ReadInteger();
+		array[n] = ReadInteger();
 	}
 }
 
@@ -205,12 +245,17 @@ int userMenu() {
 	printf("Enter number of numbers: ");
 	size_t arrSize = ReadUnsignedInteger();
 	
+	size_t startIndex = 0;
+	size_t   endIndex = arrSize - 1;	
+	
 	int *intArray = ec_malloc(arrSize * sizeof(int));
 	readUserInput(intArray, arrSize);
 	
 	intArray = mergeSort(intArray, arrSize);
 	
 	printIntArray(intArray, arrSize);
+	
+	frontendForBinSearch(startIndex, endIndex, intArray);
 	
 	free(intArray);
 	
@@ -223,9 +268,9 @@ int processFile(char *arg1) {
 	char *fileString;
 	fileString = readFile(arg1);
 	
-	parseString(); // (fileString, intArray);
+	//parseString(fileString, intArray);
 	
 	free(fileString);
-
+	
 	return 0;
 }

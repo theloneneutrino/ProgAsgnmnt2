@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
 		break;
 	default:
 		printUsage(argv[0]);
-		status = 1;
+		status = -1;
 		break;
 	}
 	
