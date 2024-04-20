@@ -2,7 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void *ec_malloc(unsigned int size) {
+void *ec_malloc(size_t size) {
+	if (size == 0) {
+		fprintf(stderr, "ERROR: ammount allocated should be greater than zero.\n");
+		exit(-1);
+	}
+	
 	void *ptr;
 	ptr = malloc(size);
 	if (ptr == NULL) {
@@ -81,6 +86,20 @@ int ReadInteger() {
 	}
 }
 
+void printIntArray (int *intArray, size_t arrSize) {
+	if (arrSize == 0) {
+		printf("WTF bro!?");
+		exit(1);
+	}
+	
+	printf("(");	
+
+	for (size_t it = 0; it < arrSize - 1; it++)
+		printf("%d, ", intArray[it]);
+	
+	printf("%d)\n", intArray[arrSize - 1]);
+}
+
 void merge(int *array1, size_t size1, int *array2, size_t size2) {
 	size_t totalSize = (size1 + size2); 
 	int *arrayTmp = ec_malloc(totalSize * sizeof(int));
@@ -111,24 +130,30 @@ void merge(int *array1, size_t size1, int *array2, size_t size2) {
     	arrayTmp[iteratorTmp++] = array2[iterator2++];
 	}
 	
-	//loop 4: put C into A
-	for (iteratorTmp = 0; iteratorTmp < totalSize; iteratorTmp++) {
-		array1[iteratorTmp] = arrayTmp[iteratorTmp];
+	//loop 4: put C into A, then B
+	for (iterator1 = 0; iterator1 < size1; iterator1++) {
+		array1[iterator1] = arrayTmp[iterator1];
 	}
 	
+	for (iterator2 = 0; iterator2 < size2; iterator2++) {
+		array2[iterator2] = arrayTmp[iterator2 + size1];
+	}
+	
+	free(arrayTmp);
 	return;
 }
 
 int *mergeSort (int *array, size_t arraySize) {
 	if (arraySize == 1) return array;
 	
-	size_t m = (arraySize / 2) + 1;
+	size_t m = (arraySize / 2);
+
 	int *L = &array[0];
 	int *R = &array[m];
 	
 	int *A = mergeSort(L, m);
 	int *B = mergeSort(R, arraySize - m);
-	
+		
 	merge(A, m, B, arraySize - m);
 	
 	return A;
@@ -185,8 +210,7 @@ int userMenu() {
 	
 	intArray = mergeSort(intArray, arrSize);
 	
-	for (size_t it = 0; it < arrSize; it++)
-		printf("%d\n", intArray[it]);
+	printIntArray(intArray, arrSize);
 	
 	free(intArray);
 	
