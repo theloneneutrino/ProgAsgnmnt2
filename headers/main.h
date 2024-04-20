@@ -22,28 +22,6 @@ void printUsage(char * arg0) {
 	printf("Usage: %s <file>\n", arg0);
 }
 
-int min(int x, int y) {
-	if(x <= y)
-		return x;
-	else
-		return y;
-}
-
-int max(int x, int y) {
-	if(x >= y)
-		return x;
-	else
-		return y;
-}
-
-void sort(int *x, int *y) {
-	int minVal = min(*x, *y);
-	int maxVal = max(*x, *y);
-	
-	*x = minVal;
-	*y = maxVal;
-}
-
 int ReadUnsignedInteger() {
 	//reads from istream until input is not integer
 	int result = 0;
@@ -87,17 +65,19 @@ int ReadInteger() {
 }
 
 void printIntArray (int *intArray, size_t arrSize) {
+	size_t endIndex = arrSize - 1;
+	
 	if (arrSize == 0) {
 		printf("WTF bro!?");
 		exit(1);
 	}
 	
-	printf("(");	
+	printf("{");	
 
-	for (size_t it = 0; it < arrSize - 1; it++)
+	for (size_t it = 0; it < endIndex; it++)
 		printf("%d, ", intArray[it]);
 	
-	printf("%d)\n", intArray[arrSize - 1]);
+	printf("%d}\n", intArray[endIndex]);
 }
 
 void merge(int *array1, size_t size1, int *array2, size_t size2) {
@@ -197,7 +177,6 @@ signed long long int RecBinarySearch(size_t startIndex, size_t endIndex, int *in
 		return -1;
 	
 	size_t middleIndex = (startIndex + endIndex) / 2;
-	printf("middleIndex = %lu\n", middleIndex);
 
 	if ( searchValue == intArray[middleIndex] )
 		return middleIndex;
@@ -219,11 +198,11 @@ int frontendForBinSearch(size_t startIndex, size_t endIndex, int *intArray) {
 	searchIndex = RecBinarySearch(startIndex, endIndex, intArray, searchValue);
 	
 	if (searchIndex == -1) {
-		printf("The number was not found in the array.");
+		printf("The number was not found in the array.\n");
 		return -1;
 	}
 	
-	printf("The number, %d, is has index, %lld", searchValue, searchIndex);
+	printf("The number, %d, is has index %lld.\n", searchValue, searchIndex);
 	
 	return 0;
 }
@@ -268,7 +247,7 @@ int processFile(char *arg1) {
 	char *fileString;
 	fileString = readFile(arg1);
 	
-	//parseString(fileString, intArray);
+	// parseString(fileString, intArray);
 	
 	free(fileString);
 	
