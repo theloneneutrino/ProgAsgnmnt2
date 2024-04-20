@@ -197,7 +197,6 @@ signed long long int RecBinarySearch(size_t startIndex, size_t endIndex, int *in
 		return -1;
 	
 	size_t middleIndex = (startIndex + endIndex) / 2;
-	printf("middleIndex = %lu\n", middleIndex);
 
 	if ( searchValue == intArray[middleIndex] )
 		return middleIndex;
@@ -223,7 +222,7 @@ int frontendForBinSearch(size_t startIndex, size_t endIndex, int *intArray) {
 		return -1;
 	}
 	
-	printf("The number, %d, is has index, %lld", searchValue, searchIndex);
+	printf("The number, %d, is has index, %lld\n", searchValue, searchIndex);
 	
 	return 0;
 }
